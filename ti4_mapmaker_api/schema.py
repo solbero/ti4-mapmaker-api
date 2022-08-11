@@ -104,6 +104,36 @@ class Name(str, Enum):
     YSSARIL = "The Yssaril Tribes"
 
 
+class NameSlug(str, Enum):
+    """Enum representing a game faction's name."""
+
+    ARBOREC = "arborec"
+    ARGENT = "argent"
+    CREUSS = "creuss"
+    EMPYREAN = "empyrean"
+    HACAN = "hacan"
+    JOL_NAR = "jol-nar"
+    KELERES = "keleres"
+    LETNEV = "letnev"
+    LIZIX = "lizix"
+    MAHACT = "mahact"
+    MENTAK = "mentak"
+    MUAAT = "muaat"
+    NAALU = "naalu"
+    NAAZ_ROKHA = "naaz-rokha"
+    NEKRO = "nekro"
+    NOMAD = "nomad"
+    SAAR = "saar"
+    SARDAKK = "sardakk"
+    SOL = "sol"
+    TITANS = "titans"
+    VUILRAITH = "vuilraith"
+    WINNU = "winnu"
+    XXCHA = "xxcha"
+    YIN = "yin"
+    YSSARIL = "yssaril"
+
+
 class Players(IntEnum):
     """Enum representing a map's player count."""
 
@@ -175,5 +205,6 @@ class Map(BaseModel):
 class Faction(BaseModel):
     """Class representing a faction."""
 
+    key: NameSlug
     name: Name
     release: Release
