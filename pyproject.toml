@@ -14,7 +14,7 @@ uvicorn = "^0.18.2"
 pydantic = { extras = ["dotenv"], version = "^1.9.1" }
 asyncstdlib = "^3.10.5"
 python-multipart = "^0.0.5"
-hexpex = "^0.1.0"
+hexpex = "^0.2.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
@@ -24,7 +24,7 @@ requests = "^2.27.1"
 pytest-cov = "^3.0.0"
 pre-commit = "^2.20.0"
 tox = "^3.25.1"
-scriv = {extras = ["toml"], version = "^0.16.0"}
+scriv = { extras = ["toml"], version = "^0.16.0" }
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
