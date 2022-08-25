@@ -157,6 +157,25 @@ class Direction(str, Enum):
     NW = "NW"
 
 
+class Style(str, Enum):
+    DIAMOND = "diamond"
+    MANTA = "manta"
+    WARP = "warp"
+    NOTCH = "notch"
+    HORIZONTAL = "horizontal"
+    NORMAL = "normal"
+    DOUBLE_WARP = "double warp"
+    SPIRAL = "spiral"
+    LARGE = "large"
+    COMPACT = "compact"
+    VERTICAL = "vertical"
+    FLAT = "flat"
+    MINI_WARP = "mini warp"
+    GAPS = "gaps"
+    APPROACHING = "approaching"
+    REX = "rex"
+
+
 class System(BaseModel):
     """Class representing a system in a tile."""
 
@@ -196,7 +215,7 @@ class Map(BaseModel):
 
     key: str = Field(regex=r"^[1-8]{1}-[a-z]+$")
     players: Players
-    style: str
+    style: Style
     description: str
     source: str
     layout: list[Position]
