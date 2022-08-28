@@ -8,9 +8,6 @@ class Settings(BaseSettings):
 
     deta_project_key: str
     deta_project_id: str
-    deta_base_document_maps: str = "maps"
-    deta_base_document_tiles: str = "tiles"
-    deta_base_document_factions: str = "factions"
 
     class Config:
         env_file = ".env"
