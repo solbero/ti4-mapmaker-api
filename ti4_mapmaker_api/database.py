@@ -8,8 +8,11 @@ from deta._async.client import _AsyncBase
 
 
 @contextlib.asynccontextmanager
-async def AsyncBase(engine: Deta, document: str) -> AsyncIterator[_AsyncBase]:
+async def AsyncBase(engine: Deta, document: str, *, testing: bool = False) -> AsyncIterator[_AsyncBase]:
     """Context manager for Deta Base Async."""
+    if testing:
+        document = f"test-{document}"
+
     async_base = engine.AsyncBase(document)
     try:
         yield async_base
