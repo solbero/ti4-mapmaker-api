@@ -1,13 +1,14 @@
 import contextlib
 import itertools
-from collections.abc import Sequence
+from collections.abc import AsyncIterator, Sequence
 from typing import Any, Union
 
 from deta import Deta
+from deta._async.client import _AsyncBase
 
 
 @contextlib.asynccontextmanager
-async def AsyncBase(engine: Deta, document: str):
+async def AsyncBase(engine: Deta, document: str) -> AsyncIterator[_AsyncBase]:
     """Context manager for Deta Base Async."""
     async_base = engine.AsyncBase(document)
     try:
