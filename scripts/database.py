@@ -5,7 +5,7 @@ from deta import Deta
 
 from scripts import faction_data, map_data, tile_data
 from ti4_mapmaker_api import config
-from ti4_mapmaker_api import database as db
+from ti4_mapmaker_api import database as database
 
 settings = config.get_settings()
 project_key = settings.deta_project_key
@@ -16,7 +16,7 @@ engine = Deta(project_key)
 async def _put_in_db(engine: Deta, collection: str, items: list[dict]):
     """Puts items in Deta Base."""
     batch_size = 25
-    async with db.AsyncBase(engine, collection) as base:
+    async with database.AsyncBase(engine, collection) as base:
         for index in range(0, len(items), batch_size):
             batch = cast(list, items[index : index + batch_size])
             await base.put_many(batch)
