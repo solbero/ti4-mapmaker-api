@@ -9,14 +9,13 @@ readme = "README.md"
 [tool.poetry.dependencies]
 deta = { extras = ["async"], version = "1.1.0a2" }
 python = "~3.9"
-fastapi = "^0.78.0"
+fastapi = "^0.88.0"
 uvicorn = "^0.18.2"
 pydantic = { extras = ["dotenv"], version = "^1.9.1" }
-asyncstdlib = "^3.10.5"
-python-multipart = "^0.0.5"
 hexpex = "^0.2.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
+httpx = "^0.23.1"
 pytest = "^7.1.2"
 black = "^22.3.0"
 flake8 = "^4.0.1"
@@ -25,8 +24,6 @@ pytest-cov = "^3.0.0"
 pre-commit = "^2.20.0"
 tox = "^3.25.1"
 scriv = { extras = ["toml"], version = "^0.16.0" }
-hypothesis = "^6.54.4"
-httpx = "^0.23.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
