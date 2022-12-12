@@ -2,7 +2,7 @@ import asyncio
 import itertools
 from collections import defaultdict
 from collections.abc import Mapping, Sequence
-from typing import Any, Optional, Union
+from typing import Optional, Union
 
 import deta
 
@@ -74,9 +74,11 @@ class AsyncBase:
         await self.db.close()
 
 
-def create_query(**kwargs: Union[Sequence[Any], None]) -> list[dict[str, Any]]:
+def create_query(**kwargs: Union[Sequence[Data], None]) -> Sequence[Record]:
     """Creates a Data Base query object from query parameters."""
-    args = [[{key: value} for value in values] for key, values in kwargs.items() if values]
+
+    args = ([{key: value} for value in values] for key, values in kwargs.items() if values)
     products = itertools.product(*args)
     query = [{key: value for dict_ in product for key, value in dict_.items()} for product in products]
+
     return query
