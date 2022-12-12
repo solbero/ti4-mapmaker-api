@@ -1,19 +1,19 @@
 from __future__ import annotations
 
-from enum import Enum, IntEnum
+import enum
 from typing import Optional
 
-from pydantic import BaseModel, Field
+import pydantic
 
 
-class Letter(str, Enum):
+class Letter(str, enum.Enum):
     """Enum representing a tile's letter."""
 
     A = "A"
     B = "B"
 
 
-class Color(str, Enum):
+class Color(str, enum.Enum):
     """Enum representing a tile's color."""
 
     BLUE = "blue"
@@ -21,7 +21,7 @@ class Color(str, Enum):
     RED = "red"
 
 
-class Wormhole(str, Enum):
+class Wormhole(str, enum.Enum):
     """Enum representing a system's wormhole."""
 
     ALPHA = "alpha"
@@ -30,7 +30,7 @@ class Wormhole(str, Enum):
     GAMMA = "gamma"
 
 
-class Trait(str, Enum):
+class Trait(str, enum.Enum):
     """Enum representing a system's trait"""
 
     CULTURAL = "cultural"
@@ -38,7 +38,7 @@ class Trait(str, Enum):
     INDUSTRIAL = "industrial"
 
 
-class Release(str, Enum):
+class Release(str, enum.Enum):
     """Enum representing a tile's release."""
 
     BASE = "base"
@@ -46,7 +46,7 @@ class Release(str, Enum):
     CODEX_3 = "codex-3"
 
 
-class Tech(str, Enum):
+class Tech(str, enum.Enum):
     """Enum representing a system's tech."""
 
     BIOTIC = "biotic"
@@ -55,7 +55,7 @@ class Tech(str, Enum):
     WARFARE = "warfare"
 
 
-class Anomaly(str, Enum):
+class Anomaly(str, enum.Enum):
     """Enum representing a system's anomaly."""
 
     ASTEROID_FIELD = "asteroid-field"
@@ -64,7 +64,7 @@ class Anomaly(str, Enum):
     SUPERNOVA = "supernova"
 
 
-class Tag(str, Enum):
+class Tag(str, enum.Enum):
     """Enum represening a tile's tag."""
 
     CENTER = "center"
@@ -74,7 +74,7 @@ class Tag(str, Enum):
     EXTERIOR = "exterior"
 
 
-class Name(str, Enum):
+class Name(str, enum.Enum):
     """Enum representing a game faction's name."""
 
     ARBOREC = "The Arborec"
@@ -104,7 +104,7 @@ class Name(str, Enum):
     YSSARIL = "The Yssaril Tribes"
 
 
-class NameSlug(str, Enum):
+class NameSlug(str, enum.Enum):
     """Enum representing a game faction's name."""
 
     ARBOREC = "arborec"
@@ -134,7 +134,7 @@ class NameSlug(str, Enum):
     YSSARIL = "yssaril"
 
 
-class Players(IntEnum):
+class Players(enum.IntEnum):
     """Enum representing a map's player count."""
 
     TWO = 2
@@ -146,7 +146,7 @@ class Players(IntEnum):
     EIGHT = 8
 
 
-class Direction(str, Enum):
+class Direction(str, enum.Enum):
     """Enum representing a hyperlane's direction."""
 
     N = "N"
@@ -157,7 +157,9 @@ class Direction(str, Enum):
     NW = "NW"
 
 
-class Style(str, Enum):
+class Style(str, enum.Enum):
+    """Enum representing a map style."""
+
     DIAMOND = "diamond"
     MANTA = "manta"
     WARP = "warp"
@@ -176,23 +178,33 @@ class Style(str, Enum):
     REX = "rex"
 
 
-class System(BaseModel):
+class Planet(pydantic.BaseModel):
+    """Class representing a planet in a system."""
+
+    resources: int = 0
+    influence: int = 0
+    trait: Optional[Trait] = None
+    tech: Optional[Tech] = None
+    legendary: bool = False
+
+
+class System(pydantic.BaseModel):
     """Class representing a system in a tile."""
 
     resources: int = 0
     influence: int = 0
-    planets: int = 0
-    traits: list[Trait] = Field(default_factory=list)
-    techs: list[Tech] = Field(default_factory=list)
-    anomalies: list[Anomaly] = Field(default_factory=list)
-    wormholes: list[Wormhole] = Field(default_factory=list)
+    planets: list[Planet] = pydantic.Field(default_factory=list)
+    traits: list[Trait] = pydantic.Field(default_factory=list)
+    techs: list[Tech] = pydantic.Field(default_factory=list)
+    anomalies: list[Anomaly] = pydantic.Field(default_factory=list)
+    wormholes: list[Wormhole] = pydantic.Field(default_factory=list)
     legendary: bool = False
 
 
-class Tile(BaseModel):
+class Tile(pydantic.BaseModel):
     """Class representing a tile."""
 
-    key: str = Field(regex=r"^\d{1,2}[A-B]?$")
+    key: str = pydantic.Field(regex=r"^\d{1,2}[A-B]?$")
     tag: Tag
     number: int
     letter: Optional[Letter] = None
@@ -200,20 +212,22 @@ class Tile(BaseModel):
     faction: Optional[Name] = None
     back: Optional[Color] = None
     system: Optional[System] = None
-    hyperlanes: list[list[Direction]] = Field(default_factory=list)
+    hyperlanes: list[list[Direction]] = pydantic.Field(default_factory=list)
 
 
-class Position(BaseModel):
+class Position(pydantic.BaseModel):
+    """Class representing a tile position."""
+
     tag: Tag
     coordinate: tuple[int, ...]
     tile: str
     rotation: int = 0
 
 
-class Map(BaseModel):
+class Map(pydantic.BaseModel):
     """Class representing a map."""
 
-    key: str = Field(regex=r"^[1-8]{1}-[a-z]+$")
+    key: str = pydantic.Field(regex=r"^[1-8]{1}-[a-z]+$")
     players: Players
     style: Style
     description: str
@@ -221,7 +235,7 @@ class Map(BaseModel):
     layout: list[Position]
 
 
-class Faction(BaseModel):
+class Faction(pydantic.BaseModel):
     """Class representing a faction."""
 
     key: NameSlug
