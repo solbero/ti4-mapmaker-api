@@ -66,6 +66,7 @@ def _get_layout(map_data: dict[str, Any]) -> list[tuple[int, ...]]:
             position["rotation"] = rotation * 60
         else:
             continue
+
         layout.append(position)
 
     return layout

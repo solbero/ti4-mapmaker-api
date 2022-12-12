@@ -1,5 +1,4 @@
 import re
-from copy import deepcopy
 from typing import Union
 
 import requests
@@ -17,8 +16,7 @@ def parsed() -> list[schema.Tile]:
 
     data_structured = _structure(data_raw)
     data_cleaned = _clean(data_structured)
-    data_complete = _add_missing(data_cleaned)
-    data_sorted = sorted(data_complete, key=lambda tile: (tile["number"], tile.get("letter")))
+    data_sorted = sorted(data_cleaned, key=lambda tile: (tile["number"], tile.get("letter")))
 
     parsed_tiles = [schema.Tile.parse_obj(tile) for tile in data_sorted]
 
@@ -72,26 +70,6 @@ def _clean(tile_list: list[dict]) -> list[dict]:
         # Remove backs from Mecatol Rex and hyperlane tiles.
         elif number == 18 or 82 <= number <= 91:
             tile.pop("back", None)
-    return tile_list
-
-
-def _add_missing(tile_list: list[dict]) -> list[dict]:
-    # Split Nexus Wormhole in an 'A' and 'B' tile.
-    nexus = next(tile for tile in tile_list if tile.get("number") == 82)
-    nexus_front, nexus_back = deepcopy(nexus), deepcopy(nexus)
-    tile_list.remove(nexus)
-
-    nexus_front["key"] = "82A"
-    nexus_front["number"] = 82
-    nexus_front["letter"] = "A"
-
-    nexus_back["key"] = "82B"
-    nexus_back["number"] = 82
-    nexus_back["letter"] = "B"
-    nexus_back["system"]["wormholes"] = ["alpha", "beta", "gamma"]
-
-    tile_list.append(nexus_front)
-    tile_list.append(nexus_back)
 
     return tile_list
 
@@ -134,8 +112,9 @@ def _get_system(data: dict[str, dict]) -> Union[dict, None]:
     wormhole = data.get("wormhole")
     planets = data.get("planets")
 
+    system = {}
     if anomaly or wormhole or planets:
-        system = {}
+
         if anomaly:
             system["anomalies"] = [anomaly]
 
@@ -143,21 +122,36 @@ def _get_system(data: dict[str, dict]) -> Union[dict, None]:
             system["wormholes"] = [wormhole]
 
         if planets:
+            system["planets"] = [_get_planet(planet) for planet in planets]
+
             if any(planet.get("resources", False) for planet in planets):
                 system["resources"] = sum(planet.get("resources", 0) for planet in planets)
             if any(planet.get("influence", False) for planet in planets):
                 system["influence"] = sum(planet.get("influence", 0) for planet in planets)
-            if len(planets) > 0:
-                system["planets"] = len(planets)
             if any(trait for planet in planets if (trait := planet.get("trait"))):
                 system["traits"] = [trait for planet in planets if (trait := planet.get("trait"))]
             if any(tech for planet in planets if (tech := planet.get("specialty"))):
                 system["techs"] = [tech for planet in planets if (tech := planet.get("specialty"))]
             system["legendary"] = True if any(planet["legendary"] for planet in planets) else False
 
-        return system
-    else:
-        return None
+    return system if system else None
+
+
+def _get_planet(data: dict[str, dict]) -> dict:
+    planet = {}
+
+    planet["name"] = data["name"]
+    planet["resources"] = data["resources"]
+    planet["influence"] = data["influence"]
+
+    if trait := data.get("trait"):
+        planet["trait"] = trait
+    if tech := data.get("specialty"):
+        planet["tech"] = tech
+    if legendary := data.get("legendary"):
+        planet["legendary"] = legendary
+
+    return planet
 
 
 def _get_hyperlanes(data: dict[str, dict]) -> Union[list[list[str]], None]:  # noqa: TAE002
