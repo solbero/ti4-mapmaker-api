@@ -30,7 +30,7 @@ def get_tiles_document() -> str:
     return "tiles"
 
 
-@router.get("/maps/", response_model=list[schema.Map])
+@router.get("/maps/", response_model=list[schema.Map], tags=["Maps"])
 async def read_maps(
     players: Optional[list[schema.Players]] = Query(None),  # noqa: B008
     style: Optional[list[schema.Style]] = Query(None),  # noqa: B008
@@ -48,7 +48,7 @@ async def read_maps(
         raise HTTPException(status_code=404, detail="No entries matched query")
 
 
-@router.get("/maps/{key}", response_model=schema.Map)
+@router.get("/maps/{key}", response_model=schema.Map, tags=["Maps"])
 async def read_maps_by_key(
     key: str = Query(regex=r"^[1-8]{1}-[a-z]+$"),  # noqa: B008
     document: str = Depends(get_maps_document),  # noqa: B008
@@ -63,7 +63,7 @@ async def read_maps_by_key(
         raise HTTPException(status_code=404, detail="No entries matched key")
 
 
-@router.get("/factions/", response_model=list[schema.Faction])
+@router.get("/factions/", response_model=list[schema.Faction], tags=["Factions"])
 async def read_factions(
     release: Optional[list[schema.Release]] = Query(None),  # noqa: B008
     document: str = Depends(get_factions_document),  # noqa: B008
@@ -80,7 +80,7 @@ async def read_factions(
         raise HTTPException(status_code=404, detail="No entries matched query")
 
 
-@router.get("/factions/{key}", response_model=schema.Faction)
+@router.get("/factions/{key}", response_model=schema.Faction, tags=["Factions"])
 async def read_factions_by_key(
     key: schema.NameSlug,
     document: str = Depends(get_factions_document),  # noqa: B008
@@ -95,7 +95,7 @@ async def read_factions_by_key(
         raise HTTPException(status_code=404, detail="No entries matched key")
 
 
-@router.get("/tiles/", response_model=list[schema.Tile])
+@router.get("/tiles/", response_model=list[schema.Tile], tags=["Tiles"])
 async def read_tiles(
     tag: Optional[list[schema.Tag]] = Query(None),  # noqa: B008
     release: Optional[list[schema.Release]] = Query(None),  # noqa: B008
@@ -113,7 +113,7 @@ async def read_tiles(
         raise HTTPException(status_code=404, detail="No entries matched query")
 
 
-@router.get("/tiles/{key}", response_model=schema.Tile)
+@router.get("/tiles/{key}", response_model=schema.Tile, tags=["Tiles"])
 async def read_tiles_by_key(
     key: str = Query(regex=r"^\d{1,2}[A-B]?$"),  # noqa: B008
     document: str = Depends(get_tiles_document),  # noqa: B008
