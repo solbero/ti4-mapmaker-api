@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from scripts import setup_database
 from ti4_mapmaker_api import view
 
 description = """
@@ -38,4 +39,9 @@ def create() -> FastAPI:
         openapi_tags=tags_metadata,
     )
     app.include_router(view.router)
+
+    @app.on_event("startup")
+    async def populate_database():
+        await setup_database.populate()
+
     return app
