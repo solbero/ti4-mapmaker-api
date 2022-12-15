@@ -1,1 +1,2 @@
 -e event.json
+--secret-file .secrets
