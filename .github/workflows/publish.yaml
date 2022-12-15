@@ -19,11 +19,6 @@ jobs:
         with:
           python-version: "3.9"
 
-      - name: Install poetry and dependencies
-        uses: abatilo/actions-poetry@v2
-        with:
-          poetry-version: "1.1.13"
-
       - name: Export Poetry requirements
         uses: divideprojects/poetry-export-requirements-action@v1
         with:
