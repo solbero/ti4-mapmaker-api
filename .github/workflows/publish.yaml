@@ -31,7 +31,7 @@ jobs:
           outfile-name: requirements.txt
 
       - name: Deploy to Deta
-        uses: BogDAAAMN/deta-deploy-action@v1
+        uses: BogDAAAMN/deta-deploy-action@v1.0.1
         with:
           deta-access-token: ${{ secrets.DETA_PROJECT_KEY }}
           deta-name: 'ti4-mapmaker-api'
