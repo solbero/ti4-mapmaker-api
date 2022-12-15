@@ -9,19 +9,21 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 charset = utf-8
+indent_size = 2
+indent_style = space
+
 
 # 4 space indentation
 [*.{py}]
-indent_style = space
 indent_size = 4
 profile = black
 
 # 2 space indentation
-[*.{json}]
-indent_style = space
+[*.{json, yaml, toml}]
 indent_size = 2
 
+# 2 space indentation
 [*.{md}]
-trim_trailing_whitespace = false
-indent_style = space
+trim_trailing_whitespace = true
+max_line_length = off
 indent_size = 2
