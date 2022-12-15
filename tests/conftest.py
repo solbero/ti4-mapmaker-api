@@ -20,7 +20,7 @@ def settings() -> config.Settings:
 
 @pytest.fixture(scope="session")
 def project_key(settings: config.Settings) -> str:
-    return settings.deta_project_key
+    return settings.DETA_PROJECT_KEY
 
 
 @pytest.fixture(scope="session")

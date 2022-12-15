@@ -9,7 +9,7 @@ from ti4_mapmaker_api import config, database, schema
 router = APIRouter()
 
 project_settings = config.get_settings()
-project_key = project_settings.deta_project_key
+project_key = project_settings.DETA_PROJECT_KEY
 
 deta_engine = deta.Deta(project_key)
 deta_db = functools.partial(database.AsyncBase, deta_engine)
