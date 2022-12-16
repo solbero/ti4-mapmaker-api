@@ -9,10 +9,10 @@
 <!-- PROJECT SHIELDS -->
 <div align="center">
   <a href="https://github.com/solbero/ti4-mapmaker-api/actions/workflows/build.yaml/" target="_blank">
-    <img src="https://img.shields.io/github/actions/workflow/status/solbero/ti4-mapmaker-api/build.yaml?branch=main" alt="Build action">
+    <img src="https://img.shields.io/github/actions/workflow/status/solbero/ti4-mapmaker-api/build.yaml?branch=main&label=build" alt="Build action">
   </a>
   <a href="https://github.com/solbero/ti4-mapmaker-api/actions/workflows/publish.yaml/" target="_blank">
-    <img src="https://img.shields.io/github/actions/workflow/status/solbero/ti4-mapmaker-api/publish.yaml?branch=main" alt="Publish action">
+    <img src="https://img.shields.io/github/actions/workflow/status/solbero/ti4-mapmaker-api/publish.yaml?branch=main&label=publish" alt="Publish action">
   </a>
   <a href="https://app.codecov.io/gh/solbero/ti4-mapmaker-api" target="_blank">
     <img src="https://img.shields.io/codecov/c/github/solbero/ti4-mapmaker-api" alt="Code coverage">
