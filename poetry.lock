@@ -556,14 +556,14 @@ files = [
 
 [[package]]
 name = "hexpex"
-version = "0.2.0"
+version = "0.2.1"
 description = "A type-hinted, object-oriented Python implementation for working with hex grids"
 category = "main"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "hexpex-0.2.0-py3-none-any.whl", hash = "sha256:3be474c715dd8763679a3e90b2456fb7dd3ed689350cb5417584de368faa9a13"},
-    {file = "hexpex-0.2.0.tar.gz", hash = "sha256:ab88d8373c9b68d481f456169d98f57774cf87f6aecd43d96443718ee1307d40"},
+    {file = "hexpex-0.2.1-py3-none-any.whl", hash = "sha256:86fc80b9ac8b549c78257c9c0e902f4ccac0acb7e6e1472ec065ff31e9b6a75e"},
+    {file = "hexpex-0.2.1.tar.gz", hash = "sha256:4a5ebd002d2b0fc381c84b13139bee4066d12ccd75a1c27a270b3d97fe9251a2"},
 ]
 
 [[package]]
@@ -1442,4 +1442,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.9"
-content-hash = "75b83c77ae464d58e2ea649ffe365c82f33b612987a0903e60aa47a3e5427f39"
+content-hash = "d2574144476f987ac9626af82dc0f266347170c84d22cc167b1d9802bb822c35"
