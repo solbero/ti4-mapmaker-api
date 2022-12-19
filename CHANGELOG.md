@@ -1,4 +1,11 @@
 
+<a id='changelog-0.1.1'></a>
+# 0.1.1 — 2022-12-19
+
+## Fixed
+
+- Updated hexpex dependency.
+
 <a id='changelog-0.1.0'></a>
 # 0.1.0 — 2022-12-15
 
