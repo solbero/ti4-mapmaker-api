@@ -1,4 +1,11 @@
 
+<a id='changelog-0.2.0'></a>
+# 0.2.0 — 2022-12-20
+
+## Changed
+
+- Renamed and added more date to layout of map schema.
+
 <a id='changelog-0.1.1'></a>
 # 0.1.1 — 2022-12-19
 

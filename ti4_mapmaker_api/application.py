@@ -30,6 +30,7 @@ def create() -> FastAPI:
     app = FastAPI(
         docs_url="/",
         redoc_url=None,
+        version="0.2.0",
         title="TI4 Mapmaker API",
         description=description,
         license_info={
