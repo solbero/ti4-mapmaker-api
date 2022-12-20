@@ -1,8 +1,8 @@
-import re
 from typing import Union
 
 import requests
 
+from scripts import utils
 from ti4_mapmaker_api import schema
 
 # URL to tile data in JSON.
@@ -30,12 +30,12 @@ def _structure(tile_data: dict[str, dict]) -> list[dict]:
 
         # Obligatory tile attributes.
         tile["key"] = id_
-        tile["number"] = _get_number(id_)
-        tile["tag"] = _get_tag(tile["number"])
+        tile["number"] = utils.get_number(id_)
+        tile["tag"] = utils.get_tag(tile["number"])
         tile["release"] = "base" if tile["number"] < 52 else "pok"
 
         # Optional tile attributes.
-        if letter := _get_letter(id_):
+        if letter := utils.get_letter(id_):
             tile["letter"] = letter
         if faction := data.get("race"):
             tile["faction"] = faction
@@ -74,43 +74,10 @@ def _clean(tile_list: list[dict]) -> list[dict]:
     return tile_list
 
 
-def _get_number(key: str) -> int:
-    pattern = r"^(?P<number>\d{1,2})"
-    result = re.search(pattern, key)
-    if result:
-        return int(result.group("number"))
-    else:
-        raise ValueError(f"'string' not in correct format, 'string' is {key!r}")
-
-
-def _get_letter(key: str) -> Union[str, None]:
-    pattern = r"(?P<letter>[A-Z]?)$"
-    result = re.search(pattern, key)
-    if result:
-        return result.group("letter")
-    else:
-        return None
-
-
-def _get_tag(number: int) -> str:
-    if 1 <= number <= 17 or 52 <= number <= 58:
-        return "home"
-    elif number == 18:
-        return "center"
-    elif 19 <= number <= 50 or 59 <= number <= 80:
-        return "system"
-    elif 83 <= number <= 91:
-        return "hyperlane"
-    elif number == 51 or number == 81 or number == 82:
-        return "exterior"
-    else:
-        raise ValueError(f"number must be between 1 and 91, not {number}")
-
-
 def _get_system(data: dict[str, dict]) -> Union[dict, None]:
     anomaly = data.get("anomaly")
     wormhole = data.get("wormhole")
-    planets = data.get("planets")
+    planets = [_get_planet(planet) for planet in data.get("planets", list())]
 
     system = {}
     if anomaly or wormhole or planets:
@@ -122,7 +89,7 @@ def _get_system(data: dict[str, dict]) -> Union[dict, None]:
             system["wormholes"] = [wormhole]
 
         if planets:
-            system["planets"] = [_get_planet(planet) for planet in planets]
+            system["planets"] = planets
 
             if any(planet.get("resources", False) for planet in planets):
                 system["resources"] = sum(planet.get("resources", 0) for planet in planets)
@@ -130,9 +97,9 @@ def _get_system(data: dict[str, dict]) -> Union[dict, None]:
                 system["influence"] = sum(planet.get("influence", 0) for planet in planets)
             if any(trait for planet in planets if (trait := planet.get("trait"))):
                 system["traits"] = [trait for planet in planets if (trait := planet.get("trait"))]
-            if any(tech for planet in planets if (tech := planet.get("specialty"))):
-                system["techs"] = [tech for planet in planets if (tech := planet.get("specialty"))]
-            system["legendary"] = True if any(planet["legendary"] for planet in planets) else False
+            if any(tech for planet in planets if (tech := planet.get("trait"))):
+                system["techs"] = [tech for planet in planets if (tech := planet.get("tech"))]
+            system["legendary"] = any(planet.get("legendary", False) for planet in planets)
 
     return system if system else None
 

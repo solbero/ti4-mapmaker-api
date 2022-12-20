@@ -4,6 +4,7 @@ import requests
 from hexpex import Cube
 from hexpex import CubeFlatAdjacentDirection as AdjacentDirection
 
+from scripts import utils
 from ti4_mapmaker_api import schema
 
 # URL to tile data in JSON.
@@ -43,30 +44,31 @@ def _get_layout(map_data: dict[str, Any]) -> list[tuple[int, ...]]:
 
     layout = []
     for index, coordinate in spiral:
-        position = {}
+        hex = {}
         if index == 0:
-            position["tag"] = "center"
-            position["tile"] = "18"
-            position["coordinate"] = center.to_tuple()
+            hex["tag"] = "center"
+            hex["number"] = "18"
+            hex["coordinate"] = center.to_dict()
         elif index in map_data["home_worlds"]:
-            position["tag"] = "home"
-            position["tile"] = "green"
-            position["coordinate"] = coordinate.to_tuple()
+            hex["tag"] = "home"
+            hex["back"] = "green"
+            hex["coordinate"] = coordinate.to_dict()
         elif index in map_data["primary_tiles"] + map_data["secondary_tiles"] + map_data["tertiary_tiles"]:
-            position["tag"] = "system"
-            position["tile"] = "blue"
-            position["coordinate"] = coordinate.to_tuple()
+            hex["tag"] = "system"
+            hex["back"] = "blue"
+            hex["coordinate"] = coordinate.to_dict()
         elif index in (
             hyperlanes := {index: [tile, rotation] for index, tile, rotation in map_data["hyperlane_tiles"]}
         ):
             tile, rotation = hyperlanes[index]
-            position["tag"] = "hyperlane"
-            position["tile"] = tile
-            position["coordinate"] = coordinate.to_tuple()
-            position["rotation"] = rotation * 60
+            hex["tag"] = "hyperlane"
+            hex["number"] = utils.get_number(tile)
+            hex["letter"] = utils.get_letter(tile)
+            hex["coordinate"] = coordinate.to_dict()
+            hex["rotation"] = rotation * 60
         else:
             continue
 
-        layout.append(position)
+        layout.append(hex)
 
     return layout
