@@ -215,12 +215,22 @@ class Tile(pydantic.BaseModel):
     hyperlanes: list[list[Direction]] = pydantic.Field(default_factory=list)
 
 
-class Position(pydantic.BaseModel):
-    """Class representing a tile position."""
+class Coordinate(pydantic.BaseModel):
+    """Class representing a coordinate."""
+
+    q: int
+    r: int
+    s: int
+
+
+class Hex(pydantic.BaseModel):
+    """Class representing a hex in the map position."""
 
     tag: Tag
-    coordinate: tuple[int, ...]
-    tile: str
+    number: Optional[int] = None
+    letter: Optional[Letter] = None
+    back: Optional[Color] = None
+    coordinate: Coordinate
     rotation: int = 0
 
 
@@ -232,7 +242,7 @@ class Map(pydantic.BaseModel):
     style: Style
     description: str
     source: str
-    layout: list[Position]
+    layout: list[Hex]
 
 
 class Faction(pydantic.BaseModel):
